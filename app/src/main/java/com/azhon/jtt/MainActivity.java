@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
 
         manager = JTT808Manager.getInstance();
         manager.setOnConnectionListener(this)
-                //http://47.108.30.48:8081/ivc/pages/admin.jsp 账号，jimu;密码，jm123456
                 .init(PHONE, TERMINAL_ID, "113.207.109.61", 8085);
     }
 
