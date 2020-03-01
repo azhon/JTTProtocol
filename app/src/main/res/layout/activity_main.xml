@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/btn_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="上报经纬度" />
+
+    <Button
+        android:id="@+id/btn_cy_alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="上传抽烟报警" />
+
+    <Button
+        android:id="@+id/btn_call_alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="上传打电话报警" />
+
+    <Button
+        android:id="@+id/btn_zsqf_alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="上传未注视前方报警" />
+
+    <Button
+        android:id="@+id/btn_wzjsw_alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="上传未在驾驶位报警" />
+
+
+    <SeekBar
+        android:id="@+id/sb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="10"
+        android:progress="1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="范围 1~10，数值越大表示疲劳程度越严重" />
+
+    <Button
+        android:id="@+id/btn_pljs_alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="上传疲劳驾驶报警" />
+
+</LinearLayout>

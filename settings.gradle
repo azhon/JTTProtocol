@@ -1,0 +1,3 @@
+rootProject.name='JTTProtocol'
+include ':app'
+include ':jtt808'
