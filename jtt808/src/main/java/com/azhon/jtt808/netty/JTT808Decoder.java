@@ -2,7 +2,6 @@ package com.azhon.jtt808.netty;
 
 import com.azhon.jtt808.bean.JTT808Bean;
 import com.azhon.jtt808.util.ByteUtil;
-import com.azhon.jtt808.util.HexUtil;
 import com.azhon.jtt808.util.JTT808Util;
 
 import java.util.List;
@@ -38,29 +37,16 @@ public class JTT808Decoder extends ByteToMessageDecoder {
      * @param byteBuf
      */
     private JTT808Bean resolve(ByteBuf byteBuf) {
-        int length = byteBuf.readableBytes();
-        //添加了拆包handler，所以这里拿到的数据都是没有7E的数据包
-        byte[] no7EData = new byte[length];
-        byteBuf.readBytes(no7EData);
-        byteBuf.clear();
-//========================================================================
-        //转义 7D 02->7E  7D 01->7D
-        String hexStr = HexUtil.byte2HexStr(no7EData);
-        String replaceHexStr = hexStr.replaceAll(" 7D 02", " 7E")
-                .replaceAll(" 7D 01", " 7D")
-                // 最后去除空格
-                .replaceAll(" ", "");
-        byte[] data = HexUtil.hexStringToByte(replaceHexStr);
-        //转义后的数据
-        byteBuf.writeBytes(data);
-//========================================================================
+
+        ByteBuf escapeBuf = escape7D(byteBuf);
+
         JTT808Bean jtt808Bean = new JTT808Bean();
         //解析消息头
         JTT808Bean.MsgHeader msgHeader = new JTT808Bean.MsgHeader();
-        byte[] msgId = byteBuf.readBytes(2).array();
-        byte[] msgAttributes = byteBuf.readBytes(2).array();
-        byte[] terminalPhone = byteBuf.readBytes(6).array();
-        byte[] flowNum = byteBuf.readBytes(2).array();
+        byte[] msgId = escapeBuf.readBytes(2).array();
+        byte[] msgAttributes = escapeBuf.readBytes(2).array();
+        byte[] terminalPhone = escapeBuf.readBytes(6).array();
+        byte[] flowNum = escapeBuf.readBytes(2).array();
 
         msgHeader.setMsgId(msgId);
         msgHeader.setMsgAttributes(msgAttributes);
@@ -71,18 +57,44 @@ public class JTT808Decoder extends ByteToMessageDecoder {
         int[] msgBodyAttr = resolveMsgBodyLength(msgAttributes);
         if (msgBodyAttr[0] == JTT808Util.SUB_PACKAGE_YES) {
             //TODO 分包
-            byteBuf.readBytes(4);
+            escapeBuf.readBytes(4);
         }
         //消息体
-        ByteBuf msgBody = byteBuf.readBytes(msgBodyAttr[1]);
+        ByteBuf msgBody = escapeBuf.readBytes(msgBodyAttr[1]);
         //校验码
-        byte checkCode = byteBuf.readByte();
+        byte checkCode = escapeBuf.readByte();
 
         jtt808Bean.setMsgHeader(msgHeader);
         jtt808Bean.setMsgBody(msgBody);
         jtt808Bean.setCheckCode(checkCode);
 
         return jtt808Bean;
+    }
+
+    /**
+     * 转义 7D 02->7E  7D 01->7D
+     *
+     * @param byteBuf
+     */
+    private ByteBuf escape7D(ByteBuf byteBuf) {
+        ByteBuf escapeBuf = Unpooled.buffer();
+        int length = byteBuf.readableBytes();
+        for (; byteBuf.readerIndex() < length; ) {
+            byte b = byteBuf.readByte();
+            if (b == 0x7D) {
+                byte nextB = byteBuf.readByte();
+                if (nextB == 0x02) {
+                    escapeBuf.writeByte(0x7E);
+                } else if (nextB == 0x01) {
+                    escapeBuf.writeByte(0x7D);
+                } else {
+                    escapeBuf.writeByte(b);
+                }
+            } else {
+                escapeBuf.writeByte(b);
+            }
+        }
+        return escapeBuf;
     }
 
     /**
