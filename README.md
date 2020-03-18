@@ -26,6 +26,8 @@
   - 上传未注视前方报警
   - 上传疲劳驾驶报警
   - 上传未在驾驶位报警 
+  
+### [测试安装包下载](https://github.com/azhon/JTTProtocol/releases)
 
 ### 效果图
 
