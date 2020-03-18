@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,14 +24,16 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
 
     private static final String TAG = "MainActivity";
 
+    public static String IP;
+    public static Integer PORT;
     //终端手机号
-    public static final String PHONE = "013496388888";
+    public static String PHONE;
     //制造商ID
-    public static final String MANUFACTURER_ID = "TYUAN";
+    public static String MANUFACTURER_ID;
     //终端型号
-    public static final String TERMINAL_MODEL = "U47DPZAMSWAAHQCQ0000";
+    public static String TERMINAL_MODEL;
     //终端ID
-    public static final String TERMINAL_ID = "LMY74DT";
+    public static String TERMINAL_ID;
     //经纬度
     public static long LAT = 31228068;
     public static long LNG = 121481323;
@@ -49,12 +52,23 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
             requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO}, 0x23);
         }
 
+    }
+
+    private void init() {
+        IP = ((EditText) findViewById(R.id.et_ip)).getText().toString();
+        PORT = Integer.parseInt(((EditText) findViewById(R.id.et_port)).getText().toString());
+        PHONE = ((EditText) findViewById(R.id.et_phone)).getText().toString();
+        MANUFACTURER_ID = ((EditText) findViewById(R.id.et_manufacturer)).getText().toString();
+        TERMINAL_MODEL = ((EditText) findViewById(R.id.et_terminal_model)).getText().toString();
+        TERMINAL_ID = ((EditText) findViewById(R.id.et_terminal_id)).getText().toString();
         manager = JTT808Manager.getInstance();
         manager.setOnConnectionListener(this)
-                .init(PHONE, TERMINAL_ID, "113.207.109.61", 8085);
+                .init(PHONE, TERMINAL_ID, IP, PORT);
+
     }
 
     private void initView() {
+        findViewById(R.id.btn_connect).setOnClickListener(this);
         findViewById(R.id.btn_location).setOnClickListener(this);
         findViewById(R.id.btn_cy_alarm).setOnClickListener(this);
         findViewById(R.id.btn_call_alarm).setOnClickListener(this);
@@ -127,28 +141,36 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
 
     @Override
     public void onClick(View v) {
-        if (manager == null) return;
         //附件列表
         List<File> files = new ArrayList<>();
         switch (v.getId()) {
+            case R.id.btn_connect:
+                init();
+                break;
             case R.id.btn_location:
+                if (manager == null) return;
                 manager.uploadLocation(LAT, LNG);
                 break;
             case R.id.btn_cy_alarm:
+                if (manager == null) return;
                 files.add(new File(getExternalCacheDir() + "/2.png"));
                 files.add(new File(getExternalCacheDir() + "/3.png"));
                 manager.uploadAlarmInfoYB(LAT, LNG, 1, 1, 0, files);
                 break;
             case R.id.btn_call_alarm:
+                if (manager == null) return;
                 manager.uploadAlarmInfoYB(LAT, LNG, 2, 1, 0, files);
                 break;
             case R.id.btn_zsqf_alarm:
+                if (manager == null) return;
                 manager.uploadAlarmInfoYB(LAT, LNG, 3, 1, 0, files);
                 break;
             case R.id.btn_pljs_alarm:
+                if (manager == null) return;
                 manager.uploadAlarmInfoYB(LAT, LNG, 4, 1, DEGREE, files);
                 break;
             case R.id.btn_wzjsw_alarm:
+                if (manager == null) return;
                 manager.uploadAlarmInfoYB(LAT, LNG, 5, 1, 0, files);
                 break;
             default:
