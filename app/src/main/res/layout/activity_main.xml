@@ -1,202 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="16dp"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="服务器地址" />
-
-            <EditText
-                android:id="@+id/et_ip"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="113.207.109.61" />
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="服务器地址" />
+
+                <EditText
+                    android:id="@+id/et_ip"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="113.207.109.61" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="服务器端口" />
+
+                <EditText
+                    android:id="@+id/et_port"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="number"
+                    android:text="8085" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="终端手机号（12位）" />
+
+                <EditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="number"
+                    android:text="013496388888" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="制造商ID（5位）" />
+
+                <EditText
+                    android:id="@+id/et_manufacturer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="TYUAN" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="终端型号（20位）" />
+
+                <EditText
+                    android:id="@+id/et_terminal_model"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="U47DPZAMSWAAHQCQ0000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="终端ID（7位）" />
+
+                <EditText
+                    android:id="@+id/et_terminal_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="LMY74DT" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
+
+            <Button
+                android:id="@+id/btn_connect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="服务器端口" />
+                android:text="连接服务器" />
 
-            <EditText
-                android:id="@+id/et_port"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="number"
-                android:text="8085" />
+            <Button
+                android:id="@+id/btn_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="上报经纬度" />
+
+            <Button
+                android:id="@+id/btn_cy_alarm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="上传抽烟报警" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
+            <Button
+                android:id="@+id/btn_call_alarm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="终端手机号（12位）" />
+                android:text="上传打电话报警" />
 
-            <EditText
-                android:id="@+id/et_phone"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="number"
-                android:text="013496388888" />
+            <Button
+                android:id="@+id/btn_zsqf_alarm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="上传未注视前方报警" />
+
+
         </LinearLayout>
 
-        <LinearLayout
+        <Button
+            android:id="@+id/btn_wzjsw_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="上传未在驾驶位报警" />
+
+        <SeekBar
+            android:id="@+id/sb"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:progress="1" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="制造商ID（5位）" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="范围 1~10，数值越大表示疲劳程度越严重" />
 
-            <EditText
-                android:id="@+id/et_manufacturer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="TYUAN" />
-        </LinearLayout>
+        <Button
+            android:id="@+id/btn_pljs_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="上传疲劳驾驶报警" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="终端型号（20位）" />
-
-            <EditText
-                android:id="@+id/et_terminal_model"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="U47DPZAMSWAAHQCQ0000" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="终端ID（7位）" />
-
-            <EditText
-                android:id="@+id/et_terminal_id"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="LMY74DT" />
-        </LinearLayout>
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="交互信息请查看控制台日志" />
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-
-        <Button
-            android:id="@+id/btn_connect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="连接服务器" />
-
-        <Button
-            android:id="@+id/btn_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="上报经纬度" />
-
-        <Button
-            android:id="@+id/btn_cy_alarm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="上传抽烟报警" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btn_call_alarm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="上传打电话报警" />
-
-        <Button
-            android:id="@+id/btn_zsqf_alarm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="上传未注视前方报警" />
-
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/btn_wzjsw_alarm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="上传未在驾驶位报警" />
-
-    <SeekBar
-        android:id="@+id/sb"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="10"
-        android:progress="1" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="范围 1~10，数值越大表示疲劳程度越严重" />
-
-    <Button
-        android:id="@+id/btn_pljs_alarm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="上传疲劳驾驶报警" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="交互信息请查看控制台日志" />
-</LinearLayout>
+</ScrollView>
