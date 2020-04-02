@@ -146,7 +146,13 @@ public class JTT808Handler extends SimpleChannelInboundHandler<JTT808Bean> {
         //连接附件服务器
         JTT1078Client jtt1078Client = new JTT1078Client(ip, port);
         //获取需要上传的附件列表
-        List<File> files = channel.attr(JTT808Client.ATTR_FILE).get();
+        String key = HexUtil.byte2HexStrNoSpace(alarmIDNumber);
+        List<File> files = JTT808Util.ALARM_MAP.get(key);
+        if (files == null) {
+            Log.e(TAG, "获取报警附件失败：" + key);
+            return;
+        }
+        JTT808Util.ALARM_MAP.remove(key);
         jtt1078Client.setFiles(files);
         jtt1078Client.setAlarmIDNumber(alarmIDNumber);
         jtt1078Client.setAlarmNumber(alarmNumber);

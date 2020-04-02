@@ -26,7 +26,6 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.timeout.IdleStateHandler;
-import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
 
 /**
@@ -160,22 +159,8 @@ public class JTT808Client {
      * @param bean
      */
     public void writeAndFlush(JTT808Bean bean) {
-        writeAndFlush(bean, null);
-    }
-
-    /**
-     * 发送数据至服务器
-     *
-     * @param bean
-     */
-    public void writeAndFlush(JTT808Bean bean, List<File> files) {
         if (channel != null) {
             channel.writeAndFlush(bean.getData());
-            //保存需要上传的附件文件列表
-            if (files != null) {
-                Attribute<List<File>> attr = channel.attr(ATTR_FILE);
-                attr.set(files);
-            }
         }
     }
 

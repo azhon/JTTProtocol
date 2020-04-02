@@ -127,11 +127,11 @@ public class JTT808Manager {
      * @param files     附件集合
      */
     public void uploadAlarmInfoYB(long lat, long lng, int alarmType, int level, int degree, List<File> files) {
-        JTT808Bean alarm = JTT808Util.uploadAlarmInfoYB(lat, lng, alarmType, level, degree, files.size(), terminalId);
+        JTT808Bean alarm = JTT808Util.uploadAlarmInfoYB(lat, lng, alarmType, level, degree, files, terminalId);
         Log.d(TAG, "上传报警信息（渝标）: " + alarm.toString() + "\n" + alarmType
                 + "(1：抽烟，2：打电话，3：未注视前方，4：疲劳驾驶，5：未在驾驶位)，"
                 + degree + "(1~10,数值越大表示疲劳程度越严重)，附件数量：" + files.size());
-        JTT808Client.getInstance().writeAndFlush(alarm, files);
+        JTT808Client.getInstance().writeAndFlush(alarm);
     }
 
     //========================get set===========================================
