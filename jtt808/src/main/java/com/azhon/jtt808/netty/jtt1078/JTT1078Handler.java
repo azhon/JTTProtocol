@@ -89,8 +89,6 @@ public class JTT1078Handler extends SimpleChannelInboundHandler<JTT808Bean> {
         byte uploadResult = body.readByte();
         //补传数据包数量
         byte pkgCount = body.readByte();
-        Log.d(TAG, "文件上传成功应答：文件名称：" + name + " 文件类型：" + fileType + "（0:图片 1:音频 2:视频 3:文本 4:其它）" +
-                "上传结果：" + uploadResult + "（0:完成 1:需要补传）\n");
         jtt1078Client.fileMsg();
     }
 

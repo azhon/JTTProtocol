@@ -142,7 +142,6 @@ public class JTT808Handler extends SimpleChannelInboundHandler<JTT808Bean> {
         byte[] alarmNumber = body.readBytes(32).array();
         //预留
         byte[] yl = body.readBytes(16).array();
-        Log.d(TAG, "收到了附件服务器的信息：ip=" + ip + " port=" + port);
         //连接附件服务器
         JTT1078Client jtt1078Client = new JTT1078Client(ip, port);
         //获取需要上传的附件列表
@@ -152,6 +151,7 @@ public class JTT808Handler extends SimpleChannelInboundHandler<JTT808Bean> {
             Log.e(TAG, "获取报警附件失败：" + key);
             return;
         }
+        Log.d(TAG, "<<<<收到了附件服务器的信息，开始上传报警标识号：" + key + "的附件");
         JTT808Util.ALARM_MAP.remove(key);
         jtt1078Client.setFiles(files);
         jtt1078Client.setAlarmIDNumber(alarmIDNumber);

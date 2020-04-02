@@ -103,7 +103,6 @@ public class JTT1078Client {
      * 当与服务器一连接上时，立即上传 报警附件信息消息
      */
     public synchronized void sendBjfjMsg() {
-        Log.d(TAG, "开始上传<报警附件信息消息>（渝标）：附件数量：" + files.size());
         JTT808Bean fjMsg = JTT808Util.uploadFJMsg(alarmIDNumber, alarmNumber, alarmNumberStr, files);
         channel.writeAndFlush(fjMsg.getData());
     }
@@ -121,7 +120,6 @@ public class JTT1078Client {
         }
         //序号加1
         fileNum++;
-        Log.d(TAG, "开始上传<文件信息上传>（渝标）：" + uploadFile + " 文件名称：" + fileName);
         JTT808Bean fileMsg = JTT808Util.uploadFileMsg(fileType, fileName, uploadFile);
         channel.writeAndFlush(fileMsg.getData());
     }
@@ -148,7 +146,6 @@ public class JTT1078Client {
         long totalPkg = Math.round(Math.ceil(length / everyPkgSize));
         byte[] fileBytes = FileUtil.file2Bytes(file.getPath());
         if (fileBytes == null) return;
-        Log.d(TAG, "开始上传<文件>（渝标）：" + file + " 文件名称：" + fileName + " 总大小：" + length + " 分包的总包数：" + totalPkg);
         //文件名称
         byte[] name = createNameBytes();
 
@@ -173,7 +170,6 @@ public class JTT1078Client {
             //发送数据
             channel.writeAndFlush(ByteBufUtil.toArray(buffer));
         }
-        Log.d(TAG, "文件上传完成（渝标）：" + uploadFile + " 文件名称：" + fileName);
     }
 
     /**
