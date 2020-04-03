@@ -1,7 +1,5 @@
 package com.azhon.jtt808.netty.jtt1078;
 
-import android.util.Log;
-
 import com.azhon.jtt808.bean.JTT808Bean;
 import com.azhon.jtt808.netty.JTT808Decoder;
 import com.azhon.jtt808.netty.JTT808Encoder;
