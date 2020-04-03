@@ -1,4 +1,5 @@
-<center><img src="https://github.com/azhon/JTTProtocol/blob/master/img/logo.png"></center>
+
+<p align=center><img src="https://github.com/azhon/JTTProtocol/blob/master/img/logo.png" /></p>
 
 #### 使用Netty封装的 部标JTT808,JTT1078,渝标协议数据上传Android端示例
 
