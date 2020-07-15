@@ -37,6 +37,4 @@
 
 <img src="https://github.com/azhon/JTTProtocol/blob/master/img/log.png">
 
-### 扫码加入QQ群找群主或者加QQ:958460248
-
-<img src="https://github.com/azhon/JTTProtocol/blob/master/img/qq_group.png">
+### 联系QQ:958460248
