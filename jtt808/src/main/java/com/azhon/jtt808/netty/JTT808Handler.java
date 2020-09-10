@@ -88,12 +88,11 @@ public class JTT808Handler extends SimpleChannelInboundHandler<JTT808Bean> {
     private void registerResult(JTT808Bean bean) {
         ByteBuf msgBody = bean.getMsgBody();
         int length = msgBody.readableBytes();
-        byte[] flowNum = msgBody.readBytes(2).array();
+        short flowNum = msgBody.readShort();
         byte result = msgBody.readByte();
         Log.d(TAG, "注册结果：" + result + "（0:成功;1:车辆已被注册;2:数据库中无该车辆; 3:终端已被注册;4:数据库中无该终端）");
         if (result != 0) return;
-        byte[] authCode = new byte[length - 3];
-        msgBody.readBytes(authCode);
+        byte[] authCode = msgBody.readBytes(length - 3).array();
         JTT808Bean authBean = JTT808Util.auth(authCode);
         Log.d(TAG, "发送鉴权: " + authBean.toString());
         JTT808Client.getInstance().writeAndFlush(authBean);
@@ -106,7 +105,7 @@ public class JTT808Handler extends SimpleChannelInboundHandler<JTT808Bean> {
      */
     private void universalResult(JTT808Bean bean) {
         ByteBuf msgBody = bean.getMsgBody();
-        byte[] flowNum = msgBody.readBytes(2).array();
+        short flowNum = msgBody.readShort();
         byte[] msgId = msgBody.readBytes(2).array();
         byte result = msgBody.readByte();
         String reply = HexUtil.byte2HexStrNoSpace(msgId);
@@ -135,7 +134,7 @@ public class JTT808Handler extends SimpleChannelInboundHandler<JTT808Bean> {
         byte[] portBytes = body.readBytes(2).array();
         int port = ByteUtil.bytes2Int(portBytes);
         //udp端口用不到，先忽略
-        body.readBytes(new byte[2]);
+        body.readBytes(2);
         //报警标识号
         byte[] alarmIDNumber = body.readBytes(16).array();
         //报警编号
