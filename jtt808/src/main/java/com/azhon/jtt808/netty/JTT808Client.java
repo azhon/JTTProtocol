@@ -5,9 +5,7 @@ import android.util.Log;
 import com.azhon.jtt808.bean.JTT808Bean;
 import com.azhon.jtt808.listener.OnConnectionListener;
 
-import java.io.File;
 import java.net.InetSocketAddress;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.netty.bootstrap.Bootstrap;
@@ -26,7 +24,6 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.timeout.IdleStateHandler;
-import io.netty.util.AttributeKey;
 
 /**
  * 项目名:    JTTProtocol
@@ -40,7 +37,6 @@ import io.netty.util.AttributeKey;
 
 public class JTT808Client {
     private static final String TAG = "JTT808Client";
-    public static final AttributeKey<List<File>> ATTR_FILE = AttributeKey.valueOf("ATTR_FILE");
     private String ip;
     private int port;
     private OnConnectionListener listener;
@@ -49,6 +45,7 @@ public class JTT808Client {
     private Bootstrap bootstrap;
     //心跳间隔 秒
     private static final int HEART_TIME = 15;
+    private NioEventLoopGroup group;
 
 
     public static JTT808Client getInstance() {
@@ -69,7 +66,7 @@ public class JTT808Client {
 
     private void connectServer() {
         try {
-            NioEventLoopGroup group = new NioEventLoopGroup();
+            group = new NioEventLoopGroup();
             bootstrap = new Bootstrap()
                     .option(ChannelOption.SO_KEEPALIVE, true)
                     .option(ChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(65535))
@@ -106,6 +103,7 @@ public class JTT808Client {
     void reConnect() {
         try {
             Log.e(TAG, "与服务器发起重连...");
+            if (bootstrap == null) return;
             ChannelFuture channelFuture = bootstrap.connect(new InetSocketAddress(ip, port));
             channelFuture.addListener(channelFutureListener);
         } catch (Exception e) {
@@ -168,8 +166,12 @@ public class JTT808Client {
      * 主动断开连接
      */
     public void disconnect() {
-        if (channel != null) {
-            channel.close();
-        }
+        if (channel == null) return;
+        channel.disconnect();
+        channel.close();
+        group.shutdownGracefully();
+        group = null;
+        bootstrap = null;
+        channel = null;
     }
 }
