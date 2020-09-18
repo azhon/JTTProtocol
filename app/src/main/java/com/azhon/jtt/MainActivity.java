@@ -1,13 +1,16 @@
 package com.azhon.jtt;
 
 import android.Manifest;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.SeekBar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.azhon.jtt808.JTT808Manager;
@@ -51,20 +54,18 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO}, 0x23);
         }
-
     }
 
     private void init() {
-        IP = ((EditText) findViewById(R.id.et_ip)).getText().toString();
-        PORT = Integer.parseInt(((EditText) findViewById(R.id.et_port)).getText().toString());
-        PHONE = ((EditText) findViewById(R.id.et_phone)).getText().toString();
-        MANUFACTURER_ID = ((EditText) findViewById(R.id.et_manufacturer)).getText().toString();
-        TERMINAL_MODEL = ((EditText) findViewById(R.id.et_terminal_model)).getText().toString();
-        TERMINAL_ID = ((EditText) findViewById(R.id.et_terminal_id)).getText().toString();
-        manager = JTT808Manager.getInstance();
-        manager.setOnConnectionListener(this)
-                .init(PHONE, TERMINAL_ID, IP, PORT);
+        IP = SharePreUtil.getString(this, "IP", Constants.IP);
+        PORT = SharePreUtil.getInt(this, "PORT", Constants.PORT);
+        PHONE = SharePreUtil.getString(this, "PHONE", Constants.PHONE);
+        MANUFACTURER_ID = SharePreUtil.getString(this, "MANUFACTURER_ID", Constants.MANUFACTURER_ID);
+        TERMINAL_MODEL = SharePreUtil.getString(this, "TERMINAL_MODEL", Constants.TERMINAL_MODEL);
+        TERMINAL_ID = SharePreUtil.getString(this, "TERMINAL_ID", Constants.TERMINAL_ID);
 
+        manager = JTT808Manager.getInstance();
+        manager.setOnConnectionListener(this).init(PHONE, TERMINAL_ID, IP, PORT);
     }
 
     private void initView() {
@@ -176,5 +177,17 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
             default:
                 break;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_setting, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        startActivity(new Intent(this, SettingActivity.class));
+        return super.onOptionsItemSelected(item);
     }
 }
