@@ -73,6 +73,18 @@ public class JTT808Handler extends SimpleChannelInboundHandler<JTT808Bean> {
             case 0x8103:
                 terminalParams(bean);
                 break;
+            //jtt1078，实时音视频传输请求
+            case 0x9101:
+                audioVideoLive(bean);
+                break;
+            //jtt1078，音视频实时传输控制
+            case 0x9102:
+                audioVideoLiveControl(bean);
+                break;
+            //jtt1078，音视频实传输状态通知
+            case 0x9105:
+                audioVideoLiveState(bean);
+                break;
             default:
                 Log.d(TAG, "收到的消息ID：" + msgId);
                 break;
@@ -228,6 +240,65 @@ public class JTT808Handler extends SimpleChannelInboundHandler<JTT808Bean> {
         if (listener != null) {
             listener.terminalParams(params);
         }
+    }
+
+    /**
+     * 实时音视频传输请求
+     *
+     * @param bean
+     */
+    private void audioVideoLive(JTT808Bean bean) {
+        ByteBuf body = bean.getMsgBody();
+        JTT808Bean.MsgHeader msgHeader = bean.getMsgHeader();
+
+        byte ipLength = body.readByte();
+        String ip = new String(body.readBytes(ipLength).array());
+        //tcp端口号
+        byte[] tcpPortBytes = body.readBytes(2).array();
+        int tcpPort = ByteUtil.bytes2Int(tcpPortBytes);
+        //udp端口号
+        byte[] udpPortBytes = body.readBytes(2).array();
+        int udpPort = ByteUtil.bytes2Int(udpPortBytes);
+        //逻辑通道号
+        byte channelNum = body.readByte();
+        //数据类型  0 音视频 1 视频 2 双向对讲  3 监听   4 中心广播  5 透传
+        byte dataType = body.readByte();
+        //码流类型 0 主码流 1 子码流
+        byte codeStream = body.readByte();
+
+        JTT808Bean jtt808Bean = JTT808Util.universalResponse(msgHeader.getFlowNum(), msgHeader.getMsgId());
+        JTT808Client.getInstance().writeAndFlush(jtt808Bean);
+        Log.d(TAG, "响应了服务器的实时音视频请求：dataType = " + dataType);
+        if (listener != null) {
+            listener.audioVideoLive(ip, tcpPort, channelNum, dataType);
+        }
+    }
+
+    /**
+     * jtt1078，音视频实时传输控制
+     *
+     * @param bean
+     */
+    private void audioVideoLiveControl(JTT808Bean bean) {
+        ByteBuf body = bean.getMsgBody();
+        byte channelNum = body.readByte();
+        byte control = body.readByte();
+        byte closeAudio = body.readByte();
+        byte switchStream = body.readByte();
+        Log.d(TAG, "实时音视频控制：channelNum=" + channelNum + " control=" + control);
+        if (listener != null) {
+            listener.audioVideoLiveControl(channelNum, control, closeAudio, switchStream);
+        }
+    }
+
+    /**
+     * jtt1078，音视频实传输状态通知
+     */
+    private void audioVideoLiveState(JTT808Bean bean) {
+        ByteBuf body = bean.getMsgBody();
+        byte channelNum = body.readByte();
+        byte losePkg = body.readByte();
+        Log.d(TAG, "音视频实传输状态通知：逻辑通道号=" + channelNum + " 丢包率：" + losePkg);
     }
 
 

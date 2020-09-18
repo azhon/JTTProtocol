@@ -5,6 +5,7 @@ import android.util.Log;
 import com.azhon.jtt808.bean.JTT808Bean;
 import com.azhon.jtt808.listener.OnConnectionListener;
 import com.azhon.jtt808.netty.JTT808Client;
+import com.azhon.jtt808.netty.live.LiveClient;
 import com.azhon.jtt808.util.JTT808Util;
 
 import java.io.File;
@@ -134,6 +135,21 @@ public class JTT808Manager {
         JTT808Client.getInstance().writeAndFlush(alarm);
     }
 
+    /**
+     * 实时音视频（jtt1078）
+     * 5.5.3 实时音视频流及透传数据传输
+     */
+    public void videoLive(byte[] data, int channelNum, LiveClient liveClient) {
+        JTT808Util.videoLive(data, channelNum, phone, liveClient);
+    }
+
+    /**
+     * 实时音视频（jtt1078）
+     * 5.5.3 实时音视频流及透传数据传输
+     */
+    public void audioLive(byte[] data, int channelNum, LiveClient liveClient) {
+        JTT808Util.audioLive(data, channelNum, phone, liveClient);
+    }
     //========================get set===========================================
 
 

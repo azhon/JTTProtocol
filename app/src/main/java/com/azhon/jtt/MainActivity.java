@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.SeekBar;
 
@@ -17,13 +19,17 @@ import com.azhon.jtt808.JTT808Manager;
 import com.azhon.jtt808.bean.JTT808Bean;
 import com.azhon.jtt808.bean.TerminalParamsBean;
 import com.azhon.jtt808.listener.OnConnectionListener;
+import com.azhon.jtt808.netty.live.LiveClient;
+import com.azhon.jtt808.util.CameraUtil;
+import com.azhon.jtt808.video.NV21EncoderH264;
+import com.azhon.jtt808.video.RecorderAudio;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements OnConnectionListener,
-        View.OnClickListener {
+        View.OnClickListener, SurfaceHolder.Callback, NV21EncoderH264.EncoderListener, RecorderAudio.RecorderListener {
 
     private static final String TAG = "MainActivity";
 
@@ -43,7 +49,11 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
     private static int DEGREE = 1;
 
     private JTT808Manager manager;
-
+    private SurfaceHolder holder;
+    //实时监控
+    private LiveClient liveClient;
+    private CameraUtil cameraUtil;
+    private RecorderAudio recorderAudio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +103,10 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
 
             }
         });
+        //初始化SurfaceView
+        SurfaceView surfaceView = findViewById(R.id.sfv);
+        holder = surfaceView.getHolder();
+        holder.addCallback(this);
     }
 
 
@@ -139,6 +153,58 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
         }
     }
 
+    @Override
+    public void audioVideoLive(String ip, int port, int channelNum, int dataType) {
+        if (liveClient != null) return;
+        liveClient = new LiveClient(ip, port);
+        startLive(channelNum);
+    }
+
+    @Override
+    public void audioVideoLiveControl(int channelNum, int control, int closeAudio, int switchStream) {
+        if (control == 0 || control == 2) {
+            stopLive();
+        } else if (control == 3) {
+            startLive(channelNum);
+        }
+    }
+
+    /**
+     * 开始实时视频
+     */
+    private void startLive(int channelNum) {
+        if (liveClient == null) return;
+        cameraUtil = new CameraUtil(holder, channelNum, MainActivity.this);
+        recorderAudio = new RecorderAudio(channelNum, MainActivity.this);
+        recorderAudio.start();
+    }
+
+    /**
+     * 停止实时视频
+     */
+    private void stopLive() {
+        if (liveClient != null) {
+            liveClient.release();
+            liveClient = null;
+        }
+        if (cameraUtil != null) {
+            cameraUtil.release();
+            cameraUtil = null;
+        }
+        if (recorderAudio != null) {
+            recorderAudio.stop();
+        }
+    }
+
+    @Override
+    public void h264(byte[] data, int channelNum) {
+        manager.videoLive(data, channelNum, liveClient);
+    }
+
+    @Override
+    public void audioData(byte[] data, int channelNum) {
+        manager.audioLive(data, channelNum, liveClient);
+    }
 
     @Override
     public void onClick(View v) {
@@ -177,6 +243,21 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
             default:
                 break;
         }
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+
     }
 
     @Override
