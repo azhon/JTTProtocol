@@ -21,19 +21,27 @@ import java.util.Arrays;
 public class NV21EncoderH264 {
     private int width, height;
     private int frameRate;
+    private boolean rotate90;
     private MediaCodec mediaCodec;
 
-    public NV21EncoderH264(int width, int height, int frameRate) {
+    public NV21EncoderH264(int width, int height, int frameRate, boolean rotate90) {
         this.width = width;
         this.height = height;
         this.frameRate = frameRate;
+        this.rotate90 = rotate90;
         initMediaCodec();
     }
 
     private void initMediaCodec() {
         try {
             mediaCodec = MediaCodec.createEncoderByType("video/avc");
-            MediaFormat mediaFormat = MediaFormat.createVideoFormat("video/avc", width, height);
+            //TODO 旋转90度 需要将宽高对调
+            MediaFormat mediaFormat;
+            if (rotate90) {
+                mediaFormat = MediaFormat.createVideoFormat("video/avc", height, width);
+            } else {
+                mediaFormat = MediaFormat.createVideoFormat("video/avc", width, height);
+            }
             //描述平均位速率（以位/秒为单位）的键。 关联的值是一个整数
             mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, width * height * 5);
             //描述视频格式的帧速率（以帧/秒为单位）的键。帧率，一般在15至30之内，太小容易造成视频卡顿。
@@ -54,11 +62,12 @@ public class NV21EncoderH264 {
      * 将NV21编码成H264
      */
     public void encoderH264(byte[] data, int channelNum, EncoderListener listener) {
-        //将NV21编码成NV12 然后旋转90度
+        //将NV21编码成NV12
         byte[] nv12 = NV21ToNV12(data, width, height);
         //视频顺时针旋转90度
-//        byte[] nv12 = rotateNV290(bytes, width, height);
-
+        if (rotate90) {
+            nv12 = rotateNV290(nv12, width, height);
+        }
         try {
             //拿到输入缓冲区,用于传送数据进行编码
             ByteBuffer[] inputBuffers = mediaCodec.getInputBuffers();

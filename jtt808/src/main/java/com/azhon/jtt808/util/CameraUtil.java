@@ -22,6 +22,8 @@ import java.util.List;
 public class CameraUtil {
     private Camera camera;
     private int channelNum;
+    //是否需要旋转90度
+    private boolean rotate90 = true;
     private SurfaceHolder holder;
     private NV21EncoderH264 h264Encoder;
     private NV21EncoderH264.EncoderListener listener;
@@ -46,7 +48,7 @@ public class CameraUtil {
         Camera.Size previewSize = getCameraPreviewSize(parameters);
         int width = previewSize.width;
         int height = previewSize.height;
-        h264Encoder = new NV21EncoderH264(width, height, 30);
+        h264Encoder = new NV21EncoderH264(width, height, 30, rotate90);
 
         //设置预览格式
         parameters.setPreviewFormat(ImageFormat.NV21);
