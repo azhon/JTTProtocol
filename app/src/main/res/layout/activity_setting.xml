@@ -122,5 +122,13 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="20dp"
             android:text="保存(重启生效)" />
+
+        <Button
+            android:id="@+id/btn_reset"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
+            android:text="恢复默认(重启生效)" />
     </LinearLayout>
 </ScrollView>

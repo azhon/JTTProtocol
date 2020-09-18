@@ -26,6 +26,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         setTitle("服务器设置");
         initView();
         findViewById(R.id.btn_save).setOnClickListener(this);
+        findViewById(R.id.btn_reset).setOnClickListener(this);
     }
 
     private void initView() {
@@ -52,12 +53,23 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        SharePreUtil.putString(this, "IP", etIp.getText().toString());
-        SharePreUtil.putInt(this, "PORT", Integer.parseInt(etPort.getText().toString()));
-        SharePreUtil.putString(this, "PHONE", etPhone.getText().toString());
-        SharePreUtil.putString(this, "MANUFACTURER_ID", etManufacturer.getText().toString());
-        SharePreUtil.putString(this, "TERMINAL_MODEL", etModel.getText().toString());
-        SharePreUtil.putString(this, "TERMINAL_ID", etTerminalId.getText().toString());
-        Toast.makeText(this, "保存成功", Toast.LENGTH_SHORT).show();
+        switch (v.getId()) {
+            case R.id.btn_save:
+                SharePreUtil.putString(this, "IP", etIp.getText().toString());
+                SharePreUtil.putInt(this, "PORT", Integer.parseInt(etPort.getText().toString()));
+                SharePreUtil.putString(this, "PHONE", etPhone.getText().toString());
+                SharePreUtil.putString(this, "MANUFACTURER_ID", etManufacturer.getText().toString());
+                SharePreUtil.putString(this, "TERMINAL_MODEL", etModel.getText().toString());
+                SharePreUtil.putString(this, "TERMINAL_ID", etTerminalId.getText().toString());
+                Toast.makeText(this, "保存成功", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btn_reset:
+                SharePreUtil.deleShareAll(this);
+                Toast.makeText(this, "恢复成功", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
+
     }
 }
