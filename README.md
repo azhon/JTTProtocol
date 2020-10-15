@@ -33,7 +33,11 @@
 
 ### 效果图
 
-<img src="https://github.com/azhon/JTTProtocol/blob/master/img/screencap.png" width="300">
+<img
+src="https://github.com/azhon/JTTProtocol/blob/master/img/screencap.png"
+width="300">&nbsp;<img
+src="https://github.com/azhon/JTTProtocol/blob/master/img/screencap1.png"
+width="300">
 
 <img src="https://github.com/azhon/JTTProtocol/blob/master/img/log.png">
 
