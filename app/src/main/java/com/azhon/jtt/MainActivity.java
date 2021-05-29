@@ -12,9 +12,6 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.SeekBar;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.azhon.jtt808.JTT808Manager;
 import com.azhon.jtt808.bean.JTT808Bean;
 import com.azhon.jtt808.bean.TerminalParamsBean;
@@ -27,6 +24,9 @@ import com.azhon.jtt808.video.RecorderAudio;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity implements OnConnectionListener,
         View.OnClickListener, SurfaceHolder.Callback, NV21EncoderH264.EncoderListener, RecorderAudio.RecorderListener {

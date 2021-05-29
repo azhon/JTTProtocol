@@ -30,35 +30,6 @@ public class ByteUtil {
         return allByte;
     }
 
-    /**
-     * 将数据数据恢复成0
-     */
-    public static void resetBytes(byte[] bytes) {
-        for (int i = 0; i < bytes.length; i++) {
-            bytes[i] = 0;
-        }
-    }
-
-    /**
-     * 计算校验和
-     *
-     * @param bytes
-     * @param index 校验和结果所在的下标
-     * @return 是否成功
-     */
-    public static boolean checkSum(byte[] bytes, int index) {
-        if (index > bytes.length - 1) {
-            return false;
-        }
-        byte right = bytes[index];
-        int plus = 0;
-        for (int i = 0; i < bytes.length; i++) {
-            if (index != i) {
-                plus += bytes[i];
-            }
-        }
-        return int2Byte(plus) == right;
-    }
 
     /**
      * 计算CRC16 MOD BUS校验码
@@ -98,25 +69,6 @@ public class ByteUtil {
         return Integer.toHexString(crc).toUpperCase();
     }
 
-    /**
-     * int 转byte字节
-     *
-     * @param value int数字
-     * @return byte 字节
-     */
-    public static byte int2Byte(int value) {
-        return (byte) value;
-    }
-
-    /**
-     * byte 转int字节
-     *
-     * @param value int数字
-     * @return byte 字节
-     */
-    public static int byte2Int(byte value) {
-        return value & 0xFF;
-    }
 
     /**
      * 两个十六进制字节转成一个int
