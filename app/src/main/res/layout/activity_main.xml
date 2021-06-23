@@ -96,6 +96,23 @@
             android:layout_height="wrap_content"
             android:text="范围 1~10，数值越大表示疲劳程度越严重" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="视频分辨率选择：" />
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dialog" />
+        </LinearLayout>
+
         <SurfaceView
             android:id="@+id/sfv"
             android:layout_width="match_parent"

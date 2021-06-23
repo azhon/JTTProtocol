@@ -7,7 +7,6 @@ import android.view.SurfaceHolder;
 import com.azhon.jtt808.video.NV21EncoderH264;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * 项目名:    JTTProtocol
@@ -21,21 +20,21 @@ import java.util.List;
 
 public class CameraUtil {
     private Camera camera;
-    private int channelNum;
+    private final int channelNum;
     //是否需要旋转90度
     private boolean rotate90 = true;
-    private SurfaceHolder holder;
+    private final SurfaceHolder holder;
     private NV21EncoderH264 h264Encoder;
-    private NV21EncoderH264.EncoderListener listener;
+    private final NV21EncoderH264.EncoderListener listener;
 
-    public CameraUtil(SurfaceHolder holder, int channelNum, NV21EncoderH264.EncoderListener listener) {
+    public CameraUtil(int width, int height, SurfaceHolder holder, int channelNum, NV21EncoderH264.EncoderListener listener) {
         this.holder = holder;
         this.channelNum = channelNum;
         this.listener = listener;
-        init();
+        init(width, height);
     }
 
-    private void init() {
+    private void init(int width, int height) {
         camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
         camera.setPreviewCallback(new Camera.PreviewCallback() {
             @Override
@@ -44,10 +43,6 @@ public class CameraUtil {
             }
         });
         Camera.Parameters parameters = camera.getParameters();
-        //获取预览的大小
-        Camera.Size previewSize = getCameraPreviewSize(parameters);
-        int width = previewSize.width;
-        int height = previewSize.height;
         h264Encoder = new NV21EncoderH264(width, height, 30, rotate90);
 
         //设置预览格式
@@ -67,28 +62,6 @@ public class CameraUtil {
         camera.startPreview();
     }
 
-    /**
-     * 获取设备支持的最大分辨率
-     *
-     * @return
-     */
-    private Camera.Size getCameraPreviewSize(Camera.Parameters parameters) {
-        List<Camera.Size> list = parameters.getSupportedPreviewSizes();
-        Camera.Size needSize = null;
-        for (Camera.Size size : list) {
-            if (needSize == null) {
-                needSize = size;
-                continue;
-            }
-            if (size.width >= needSize.width) {
-                if (size.height > needSize.height) {
-                    needSize = size;
-                }
-            }
-        }
-        return needSize;
-
-    }
 
     public void release() {
         if (null != camera) {

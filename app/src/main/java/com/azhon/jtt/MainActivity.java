@@ -2,6 +2,7 @@ package com.azhon.jtt;
 
 import android.Manifest;
 import android.content.Intent;
+import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +11,10 @@ import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 
 import com.azhon.jtt808.JTT808Manager;
 import com.azhon.jtt808.bean.JTT808Bean;
@@ -47,6 +51,9 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
     public static long LAT = 31228068;
     public static long LNG = 121481323;
     private static int DEGREE = 1;
+    //视频宽高
+    private static int WIDTH;
+    private static int HEIGHT;
 
     private JTT808Manager manager;
     private SurfaceHolder holder;
@@ -54,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
     private LiveClient liveClient;
     private CameraUtil cameraUtil;
     private RecorderAudio recorderAudio;
+    private Spinner spinner;
+    private List<Camera.Size> sizeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +73,33 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO}, 0x23);
         }
+        initCamera();
+    }
+
+    private void initCamera() {
+        Camera camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
+        Camera.Parameters parameters = camera.getParameters();
+        sizeList = parameters.getSupportedPreviewSizes();
+        List<String> items = new ArrayList<>();
+        for (Camera.Size size : sizeList) {
+            items.add(size.width + "x" + size.height);
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                WIDTH = sizeList.get(position).width;
+                HEIGHT = sizeList.get(position).height;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        camera.release();
     }
 
     private void init() {
@@ -79,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
     }
 
     private void initView() {
+        spinner = findViewById(R.id.spinner);
         findViewById(R.id.btn_connect).setOnClickListener(this);
         findViewById(R.id.btn_location).setOnClickListener(this);
         findViewById(R.id.btn_cy_alarm).setOnClickListener(this);
@@ -174,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
      */
     private void startLive(int channelNum) {
         if (liveClient == null) return;
-        cameraUtil = new CameraUtil(holder, channelNum, MainActivity.this);
+        cameraUtil = new CameraUtil(WIDTH, HEIGHT, holder, channelNum, MainActivity.this);
         recorderAudio = new RecorderAudio(channelNum, MainActivity.this);
         recorderAudio.start();
     }
