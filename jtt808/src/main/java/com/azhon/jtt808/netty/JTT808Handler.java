@@ -176,66 +176,16 @@ public class JTT808Handler extends SimpleChannelInboundHandler<JTT808Bean> {
      *
      * @param bean
      */
-    private void terminalParams(JTT808Bean bean) throws Exception {
+    private void terminalParams(JTT808Bean bean) {
         List<TerminalParamsBean> params = new ArrayList<>();
         ByteBuf body = bean.getMsgBody();
         //参数总数
         byte paramsCount = body.readByte();
         for (byte i = 0; i < paramsCount; i++) {
-            //DWORD 读取4个字节
             int id = body.readInt();
             byte paramsLength = body.readByte();
             byte[] data = body.readBytes(paramsLength).array();
-            switch (id) {
-                //DWORD
-                case 0x0055:
-                case 0x0056:
-                case 0x0057:
-                case 0x0058:
-                case 0x0059:
-                case 0x005A:
-                case 0x0018:
-                case 0x0019:
-                case 0x0020:
-                case 0x0021:
-                case 0x0022:
-                case 0x0027:
-                case 0x0028:
-                case 0x0029:
-                case 0x002C:
-                case 0x002D:
-                case 0x002E:
-                case 0x002F:
-                case 0x0030:
-                    params.add(new TerminalParamsBean(id, Integer.class, ByteUtil.fourBytes2Int(data)));
-                    break;
-                //WORD
-                case 0x005B:
-                case 0x005C:
-                case 0x0081:
-                case 0x0082:
-                    params.add(new TerminalParamsBean(id, Integer.class, ByteUtil.bytes2Int(data)));
-                    break;
-                //STRING
-                case 0x0010:
-                case 0x0011:
-                case 0x0012:
-                case 0x0013:
-                case 0x0014:
-                case 0x0015:
-                case 0x0016:
-                case 0x0017:
-                case 0x0083:
-                    params.add(new TerminalParamsBean(id, String.class, new String(data, "GBK")));
-                    break;
-                //BYTE
-                case 0x0084:
-                    params.add(new TerminalParamsBean(id, Byte.class, data[0]));
-                    break;
-
-                default:
-                    break;
-            }
+            params.add(new TerminalParamsBean(id, data));
         }
         if (listener != null) {
             listener.terminalParams(params);

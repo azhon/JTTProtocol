@@ -173,13 +173,6 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
     public void terminalParams(List<TerminalParamsBean> params) {
         for (TerminalParamsBean param : params) {
             int id = param.getId();
-            if (Integer.class.equals(param.getClz())) {
-                int value = (int) param.getValue();
-            } else if (String.class.equals(param.getClz())) {
-                String value = (String) param.getValue();
-            } else if (Byte.class.equals(param.getClz())) {
-                Byte value = (Byte) param.getValue();
-            }
             switch (id) {
                 //最高速度，单位为公里每小时(km/h)
                 case 0x0055:

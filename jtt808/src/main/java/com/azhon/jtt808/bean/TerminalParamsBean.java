@@ -13,15 +13,11 @@ package com.azhon.jtt808.bean;
 public class TerminalParamsBean {
     //参数 ID
     private int id;
-    //数据类型
-    private Class clz;
-    //参数的值
-    private Object value;
+    private byte[] data;
 
-    public TerminalParamsBean(int id, Class clz, Object value) {
+    public TerminalParamsBean(int id, byte[] data) {
         this.id = id;
-        this.clz = clz;
-        this.value = value;
+        this.data = data;
     }
 
     public int getId() {
@@ -32,19 +28,11 @@ public class TerminalParamsBean {
         this.id = id;
     }
 
-    public Class getClz() {
-        return clz;
+    public byte[] getData() {
+        return data;
     }
 
-    public void setClz(Class clz) {
-        this.clz = clz;
-    }
-
-    public Object getValue() {
-        return value;
-    }
-
-    public void setValue(Object value) {
-        this.value = value;
+    public void setData(byte[] data) {
+        this.data = data;
     }
 }
