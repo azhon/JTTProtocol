@@ -40,4 +40,4 @@ width="300">
 
 <img src="https://github.com/azhon/JTTProtocol/blob/master/img/log.png">
 
-### 联系QQ:938431720(备注：808)
+### 联系QQ:938431720(此项目为付费项目)
