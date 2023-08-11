@@ -30,6 +30,8 @@
 
 ### [测试安装包下载](https://github.com/azhon/JTTProtocol/releases)
 
+### [1078测试平台](https://lib.cvtsp.com/video/CVNetVideoJs/test/tstrtvs.html)
+
 ### 效果图
 
 <img
