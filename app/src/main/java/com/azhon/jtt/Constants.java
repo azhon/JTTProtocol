@@ -12,9 +12,9 @@ package com.azhon.jtt;
 
 public interface Constants {
 
-    String IP = "113.207.109.61";
+    String IP = "116.228.114.206";
 
-    Integer PORT = 8085;
+    Integer PORT = 15000;
     //终端手机号
     String PHONE = "013496388888";
     //制造商ID
