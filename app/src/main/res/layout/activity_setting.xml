@@ -25,7 +25,8 @@
             <EditText
                 android:id="@+id/et_ip"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -43,7 +44,8 @@
                 android:id="@+id/et_port"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="number" />
+                android:inputType="number"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -61,7 +63,8 @@
                 android:id="@+id/et_phone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="number" />
+                android:inputType="number"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -78,7 +81,8 @@
             <EditText
                 android:id="@+id/et_manufacturer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -95,7 +99,8 @@
             <EditText
                 android:id="@+id/et_terminal_model"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -112,7 +117,8 @@
             <EditText
                 android:id="@+id/et_terminal_id"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <Button
