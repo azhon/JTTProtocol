@@ -11,7 +11,8 @@ import com.azhon.jtt808.JTT808Manager;
 
 
 class LocationThread extends Thread {
-    private JTT808Manager manager;
+    private final JTT808Manager manager;
+    private boolean loop = true;
 
     LocationThread(JTT808Manager manager) {
         this.manager = manager;
@@ -19,14 +20,19 @@ class LocationThread extends Thread {
 
     @Override
     public void run() {
-        while (true) {
+        while (loop) {
             try {
                 Thread.sleep(5 * 1000);
-                manager.uploadLocation(MainActivity.LAT, MainActivity.LNG);
+                manager.uploadLocation(Constants.LAT, Constants.LNG);
                 Thread.sleep(5 * 1000);
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void release() {
+        loop = false;
+        interrupt();
     }
 }

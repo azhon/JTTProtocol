@@ -23,4 +23,8 @@ public interface Constants {
     String TERMINAL_MODEL = "U47DPZAMSWAAHQCQ0000";
     //终端ID
     String TERMINAL_ID = "LMY74DT";
+    //===================
+    //经纬度
+    long LAT = 31228068;
+    long LNG = 121481323;
 }

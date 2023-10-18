@@ -27,11 +27,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
+            <ToggleButton
                 android:id="@+id/btn_connect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="连接服务器" />
+                android:textOff="连接服务器"
+                android:textOn="断开服务器" />
 
             <Button
                 android:id="@+id/btn_location"
