@@ -103,6 +103,9 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
     }
 
     private void init() {
+        if (manager != null) {
+            return;
+        }
         IP = SharePreUtil.getString(this, "IP", Constants.IP);
         PORT = SharePreUtil.getInt(this, "PORT", Constants.PORT);
         PHONE = SharePreUtil.getString(this, "PHONE", Constants.PHONE);
@@ -112,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
 
         manager = JTT808Manager.getInstance();
         manager.setOnConnectionListener(this).init(PHONE, TERMINAL_ID, IP, PORT);
+        new LocationThread(manager).start();
     }
 
     private void initView() {
