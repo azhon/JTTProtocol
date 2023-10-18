@@ -21,10 +21,11 @@ class LocationThread extends Thread {
     public void run() {
         while (true) {
             try {
-                Thread.sleep(10 * 1000);
+                Thread.sleep(5 * 1000);
                 manager.uploadLocation(MainActivity.LAT, MainActivity.LNG);
+                Thread.sleep(5 * 1000);
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         }
     }

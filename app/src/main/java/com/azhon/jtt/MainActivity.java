@@ -3,7 +3,6 @@ package com.azhon.jtt;
 import android.Manifest;
 import android.content.Intent;
 import android.hardware.Camera;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -11,10 +10,12 @@ import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.azhon.jtt808.JTT808Manager;
 import com.azhon.jtt808.bean.JTT808Bean;
@@ -24,6 +25,8 @@ import com.azhon.jtt808.netty.live.LiveClient;
 import com.azhon.jtt808.util.CameraUtil;
 import com.azhon.jtt808.video.NV21EncoderH264;
 import com.azhon.jtt808.video.RecorderAudio;
+import com.permissionx.guolindev.PermissionX;
+import com.permissionx.guolindev.callback.RequestCallback;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,8 +35,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity implements OnConnectionListener,
-        View.OnClickListener, SurfaceHolder.Callback, NV21EncoderH264.EncoderListener, RecorderAudio.RecorderListener {
+public class MainActivity extends AppCompatActivity implements OnConnectionListener, View.OnClickListener, SurfaceHolder.Callback, NV21EncoderH264.EncoderListener, RecorderAudio.RecorderListener {
 
     private static final String TAG = "MainActivity";
 
@@ -70,52 +72,7 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
         setContentView(R.layout.activity_main);
         setTitle("部标JTT808,JTT1078,渝标协议封装");
         initView();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO}, 0x23);
-        }
-        initCamera();
-    }
-
-    private void initCamera() {
-        Camera camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
-        Camera.Parameters parameters = camera.getParameters();
-        sizeList = parameters.getSupportedPreviewSizes();
-        List<String> items = new ArrayList<>();
-        for (Camera.Size size : sizeList) {
-            items.add(size.width + "x" + size.height);
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                WIDTH = sizeList.get(position).width;
-                HEIGHT = sizeList.get(position).height;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        camera.release();
-    }
-
-    private void init() {
-        if (manager != null) {
-            return;
-        }
-        IP = SharePreUtil.getString(this, "IP", Constants.IP);
-        PORT = SharePreUtil.getInt(this, "PORT", Constants.PORT);
-        PHONE = SharePreUtil.getString(this, "PHONE", Constants.PHONE);
-        MANUFACTURER_ID = SharePreUtil.getString(this, "MANUFACTURER_ID", Constants.MANUFACTURER_ID);
-        TERMINAL_MODEL = SharePreUtil.getString(this, "TERMINAL_MODEL", Constants.TERMINAL_MODEL);
-        TERMINAL_ID = SharePreUtil.getString(this, "TERMINAL_ID", Constants.TERMINAL_ID);
-
-        manager = JTT808Manager.getInstance();
-        manager.setOnConnectionListener(this).init(PHONE, TERMINAL_ID, IP, PORT);
-        new LocationThread(manager).start();
+        checkPermission();
     }
 
     private void initView() {
@@ -148,6 +105,50 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
         SurfaceView surfaceView = findViewById(R.id.sfv);
         holder = surfaceView.getHolder();
         holder.addCallback(this);
+
+        int heightPixels = getResources().getDisplayMetrics().heightPixels;
+        ViewGroup.LayoutParams layoutParams = surfaceView.getLayoutParams();
+        layoutParams.height = heightPixels;
+        surfaceView.setLayoutParams(layoutParams);
+    }
+
+    private void checkPermission() {
+        PermissionX.init(this).permissions(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO).request(new RequestCallback() {
+            @Override
+            public void onResult(boolean allGranted, @NonNull List<String> grantedList, @NonNull List<String> deniedList) {
+                if (allGranted) {
+                    initCamera();
+                } else {
+                    Toast.makeText(MainActivity.this, "请允许所有权限", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void initCamera() {
+        Camera camera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
+        Camera.Parameters parameters = camera.getParameters();
+        sizeList = parameters.getSupportedPreviewSizes();
+        List<String> items = new ArrayList<>();
+        for (Camera.Size size : sizeList) {
+            items.add(size.width + "x" + size.height);
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                WIDTH = sizeList.get(position).width;
+                HEIGHT = sizeList.get(position).height;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        camera.release();
     }
 
 
@@ -277,6 +278,22 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
             default:
                 break;
         }
+    }
+
+    private void init() {
+        if (manager != null) {
+            return;
+        }
+        IP = SharePreUtil.getString(this, "IP", Constants.IP);
+        PORT = SharePreUtil.getInt(this, "PORT", Constants.PORT);
+        PHONE = SharePreUtil.getString(this, "PHONE", Constants.PHONE);
+        MANUFACTURER_ID = SharePreUtil.getString(this, "MANUFACTURER_ID", Constants.MANUFACTURER_ID);
+        TERMINAL_MODEL = SharePreUtil.getString(this, "TERMINAL_MODEL", Constants.TERMINAL_MODEL);
+        TERMINAL_ID = SharePreUtil.getString(this, "TERMINAL_ID", Constants.TERMINAL_ID);
+
+        manager = JTT808Manager.getInstance();
+        manager.setOnConnectionListener(this).init(PHONE, TERMINAL_ID, IP, PORT);
+        new LocationThread(manager).start();
     }
 
     @Override
