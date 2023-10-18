@@ -35,7 +35,7 @@
 ### 效果图
 
 <img
-src="https://github.com/azhon/JTTProtocol/blob/master/img/screencap.png"
+src="https://github.com/azhon/JTTProtocol/blob/master/img/screencap.jpg"
 width="300">&nbsp;<img
 src="https://github.com/azhon/JTTProtocol/blob/master/img/screencap1.png"
 width="300">
