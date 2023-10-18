@@ -37,7 +37,7 @@
 <img
 src="https://github.com/azhon/JTTProtocol/blob/master/img/screencap.jpg"
 width="300">&nbsp;<img
-src="https://github.com/azhon/JTTProtocol/blob/master/img/screencap1.png"
+src="https://github.com/azhon/JTTProtocol/blob/master/img/screencap1.jpg"
 width="300">
 
 <img src="https://github.com/azhon/JTTProtocol/blob/master/img/log.png">
