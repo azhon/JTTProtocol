@@ -18,6 +18,7 @@ import java.io.IOException;
  * @author 阿钟
  */
 
+@SuppressWarnings("deprecation")
 public class CameraUtil {
     private Camera camera;
     private final int channelNum;
@@ -50,6 +51,7 @@ public class CameraUtil {
         //设置预览图像分辨率
         parameters.setPreviewSize(width, height);
         camera.setDisplayOrientation(90);
+        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
         //配置camera参数
         camera.setParameters(parameters);
         //没有surface的话，相机不会开启preview预览
@@ -60,6 +62,7 @@ public class CameraUtil {
         }
         //调用startPreview()用以更新preview的surface，必须要在拍照之前start Preview
         camera.startPreview();
+        camera.cancelAutoFocus();
     }
 
 

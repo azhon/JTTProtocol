@@ -36,6 +36,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+@SuppressWarnings("deprecation")
 public class MainActivity extends AppCompatActivity implements OnConnectionListener, View.OnClickListener, SurfaceHolder.Callback, NV21EncoderH264.EncoderListener, RecorderAudio.RecorderListener {
 
     private static final String TAG = "MainActivity";
