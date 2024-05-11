@@ -18,6 +18,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.azhon.jtt808.JTT808Manager;
 import com.azhon.jtt808.bean.JTT808Bean;
 import com.azhon.jtt808.bean.TerminalParamsBean;
@@ -32,9 +35,6 @@ import com.permissionx.guolindev.callback.RequestCallback;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends AppCompatActivity implements OnConnectionListener, View.OnClickListener, SurfaceHolder.Callback, NV21EncoderH264.EncoderListener, RecorderAudio.RecorderListener {
@@ -150,6 +150,11 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
             }
         });
         camera.release();
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).startsWith("1280")) {
+                spinner.setSelection(i);
+            }
+        }
     }
 
 
