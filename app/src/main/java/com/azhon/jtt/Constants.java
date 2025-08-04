@@ -23,6 +23,11 @@ public interface Constants {
     String TERMINAL_MODEL = "U47DPZAMSWAAHQCQ0000";
     //终端ID
     String TERMINAL_ID = "LMY74DT";
+    //车牌颜色
+    int PLATE_COLOR = 0;
+    //车牌
+    String PLATE = "";
+
     //===================
     //经纬度
     long LAT = 31228068;

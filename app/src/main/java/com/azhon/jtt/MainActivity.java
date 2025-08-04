@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
     public static String MANUFACTURER_ID;
     //终端型号
     public static String TERMINAL_MODEL;
+    public static int PLATE_COLOR;
+    public static String PLATE;
     private static int DEGREE = 1;
     //视频宽高
     private static int WIDTH;
@@ -162,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
     public void onConnectionSateChange(int state) {
         switch (state) {
             case OnConnectionListener.CONNECTED:
-                manager.register(MANUFACTURER_ID, TERMINAL_MODEL);
+                manager.register(MANUFACTURER_ID, TERMINAL_MODEL, PLATE_COLOR, PLATE);
                 break;
             case OnConnectionListener.DIS_CONNECT:
                 Log.d(TAG, "断开连接");
@@ -293,6 +295,8 @@ public class MainActivity extends AppCompatActivity implements OnConnectionListe
         String terminalId = SharePreUtil.getString(this, "TERMINAL_ID", Constants.TERMINAL_ID);
         MANUFACTURER_ID = SharePreUtil.getString(this, "MANUFACTURER_ID", Constants.MANUFACTURER_ID);
         TERMINAL_MODEL = SharePreUtil.getString(this, "TERMINAL_MODEL", Constants.TERMINAL_MODEL);
+        PLATE_COLOR = SharePreUtil.getInt(this, "PLATE_COLOR", Constants.PLATE_COLOR);
+        PLATE = SharePreUtil.getString(this, "PLATE", Constants.PLATE);
 
         manager = JTT808Manager.getInstance();
         manager.setOnConnectionListener(this).init(phone, terminalId, ip, port);

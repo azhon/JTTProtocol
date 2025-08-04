@@ -97,8 +97,8 @@ public class JTT808Manager {
      * @param manufacturerId 制造商 ID
      * @param terminalModel  终端型号
      */
-    public void register(String manufacturerId, String terminalModel) {
-        JTT808Bean register = JTT808Util.register(manufacturerId, terminalModel, terminalId);
+    public void register(String manufacturerId, String terminalModel, int plateColor, String plate) {
+        JTT808Bean register = JTT808Util.register(manufacturerId, terminalModel, terminalId, plateColor, plate);
         Log.d(TAG, "发送注册: " + register.toString());
         JTT808Client.getInstance().writeAndFlush(register);
     }
