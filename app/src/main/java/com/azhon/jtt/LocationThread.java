@@ -24,7 +24,6 @@ class LocationThread extends Thread {
             try {
                 Thread.sleep(5 * 1000);
                 manager.uploadLocation(Constants.LAT, Constants.LNG);
-                Thread.sleep(5 * 1000);
             } catch (Exception e) {
                 e.printStackTrace();
             }
